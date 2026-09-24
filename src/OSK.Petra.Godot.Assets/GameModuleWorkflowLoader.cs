@@ -10,6 +10,12 @@ using System.Collections.Generic;
 
 namespace OSK.Petra.Godot.Assets;
 
+/// <summary>
+/// Represents a module loader for godot that loads utilizing a workflow
+/// </summary>
+/// <typeparam name="TModule">The type of node module to load</typeparam>
+/// <typeparam name="TModuleDescriptor">The type of descriptor for the module</typeparam>
+/// <typeparam name="TModuleParameters">The type of parameters required to load the module</typeparam>
 public abstract class GameModuleWorkflowLoader<TModule, TModuleDescriptor, TModuleParameters>
     : ModuleLoader<TModuleParameters>
     where TModule: IModule
@@ -20,12 +26,20 @@ public abstract class GameModuleWorkflowLoader<TModule, TModuleDescriptor, TModu
 
     private WorkflowRunner _runner;
 
+    /// <summary>
+    /// The module node, once it is loaded
+    /// </summary>
     protected TModule ModuleNode { get; set; }
 
     #endregion
 
     #region Constructors
 
+    /// <summary>
+    /// Creates a workflow module loader with the provided dsecriptor and load parameters
+    /// </summary>
+    /// <param name="descriptor">The descriptor for the module being loaded</param>
+    /// <param name="parameters">The parameters needed to load the module</param>
     public GameModuleWorkflowLoader(TModuleDescriptor descriptor, TModuleParameters parameters)
         : base(descriptor, parameters)
     {
@@ -48,6 +62,10 @@ public abstract class GameModuleWorkflowLoader<TModule, TModuleDescriptor, TModu
 
     #region ModuleLoader
 
+    /// <summary>
+    /// Gets the loaded module
+    /// </summary>
+    /// <returns>The module, if finished loading</returns>
     public IModule GetLoadedModule()
         => ModuleNode;
 
@@ -55,6 +73,7 @@ public abstract class GameModuleWorkflowLoader<TModule, TModuleDescriptor, TModu
 
     #region WorkflowOperation Overrides
 
+    /// <inheritdoc/>
     protected override LoadProgress UpdateProgress(TimeSpan deltaTime)
     {
         if (_runner is null)
@@ -83,18 +102,33 @@ public abstract class GameModuleWorkflowLoader<TModule, TModuleDescriptor, TModu
 
     #region Helpers
 
+    /// <summary>
+    /// Triggered when the workflow finished
+    /// </summary>
     protected virtual void OnWorkflowFinished()
     {
     }
 
+    /// <summary>
+    /// Triggered when a workflow step compeltes
+    /// </summary>
+    /// <param name="stepFinishedEvent">The triggered finished step event</param>
     protected virtual void OnStepFinished(WorkflowStepFinishedEvent stepFinishedEvent)
     {
     }
 
+    /// <summary>
+    /// Triggererd when an individual operation within a step failed
+    /// </summary>
+    /// <param name="finishedEvent">The triggered finished event</param>
     protected virtual void OnOperationFinished(WorkflowStepOperationFinishedEvent finishedEvent)
     {
     }
 
+    /// <summary>
+    /// Gets the list of extended workflow steps required to fully load and initialize the module, once the module has been loaded
+    /// </summary>
+    /// <returns></returns>
     protected abstract IEnumerable<WorkflowStep> GetWorkflowSteps();
 
     #endregion

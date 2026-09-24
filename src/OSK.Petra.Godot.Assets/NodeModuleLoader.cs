@@ -13,6 +13,14 @@ using OSK.Petra.Godot.Modules.Services;
 
 namespace OSK.Petra.Godot.Assets;
 
+/// <summary>
+/// A loader that specializes in loading modules that utilize the <see cref="Node"/>
+/// </summary>
+/// <typeparam name="TModule">The type of <see cref="Node"/> the loader will load</typeparam>
+/// <typeparam name="TModuleDescriptor">The type of descriptor describing the module</typeparam>
+/// <typeparam name="TLoadParameters">The type of parameters required to load the module</typeparam>
+/// <param name="descriptor">Describes the module</param>
+/// <param name="loadParameters">THe required parameters to load the module</param>
 public abstract class NodeModuleLoader<TModule, TModuleDescriptor, TLoadParameters>(TModuleDescriptor descriptor, TLoadParameters loadParameters)
     : GameModuleWorkflowLoader<TModule, TModuleDescriptor, TLoadParameters>(descriptor, loadParameters)
     where TModule: Node, IModule
@@ -21,6 +29,7 @@ public abstract class NodeModuleLoader<TModule, TModuleDescriptor, TLoadParamete
 {
     #region GameModuleWorkflowLoader Overrides
 
+    /// <inheritdoc/>
     protected override void LoadModule()
     {
         if (Parameters.LoadBehavior is ModuleLoadBehavior.Replace)
@@ -38,6 +47,7 @@ public abstract class NodeModuleLoader<TModule, TModuleDescriptor, TLoadParamete
         Parameters.SceneRoot.AddChild(ModuleNode);
     }
 
+    /// <inheritdoc/>
     protected override IEnumerable<WorkflowStep> GetWorkflowSteps()
     {
         yield return new(new LoadResourceOperation(Descriptor.AssetPath, LoadResourceOptions.Default))
@@ -51,6 +61,7 @@ public abstract class NodeModuleLoader<TModule, TModuleDescriptor, TLoadParamete
         }
     }
 
+    /// <inheritdoc/>
     protected override void OnOperationFinished(WorkflowStepOperationFinishedEvent finishedEvent)
     {
         if (ModuleNode is null && finishedEvent.Operation is LoadResourceOperation loadResourceOperation && loadResourceOperation.Result is PackedScene packedScene)
@@ -65,6 +76,10 @@ public abstract class NodeModuleLoader<TModule, TModuleDescriptor, TLoadParamete
 
     #region Helpers
 
+    /// <summary>
+    /// A method that provides specific workflow steps required to fully load the module, beyond the initial load for the base module itself
+    /// </summary>
+    /// <returns>The list of steps required to fully load and initialize the module</returns>
     protected virtual IEnumerable<WorkflowStep> GetModuleWorkflowSteps()
         => [];
 
