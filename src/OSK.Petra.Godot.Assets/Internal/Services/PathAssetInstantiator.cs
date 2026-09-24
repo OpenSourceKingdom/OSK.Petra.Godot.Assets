@@ -28,7 +28,7 @@ internal class PathAssetInstantiator<TEntity, TTransform>(string path, bool allo
         _packedScene.Dispose();
     }
 
-    public TEntity Instantiate(TTransform transform, Action<TEntity>? configurator = null)
+    public TEntity Instantiate(TTransform transform, Action<TEntity> configurator = null)
         => Instantiate(_packedScene, transform, configurator);
 
     #endregion

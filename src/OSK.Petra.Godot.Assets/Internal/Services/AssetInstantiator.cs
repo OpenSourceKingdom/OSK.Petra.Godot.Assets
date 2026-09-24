@@ -5,8 +5,22 @@ using OSK.Petra.Assets.Models;
 
 namespace OSK.Petra.Godot.Assets.Internal.Services;
 
+/// <summary>
+/// A generic instantiator to help share base instantiation logic among different instantiators
+/// </summary>
 public abstract class AssetInstantiator
 {
+    /// <summary>
+    /// Instantiates a packed scene into a usable entity within the asset system
+    /// </summary>
+    /// <typeparam name="TEntity">The type of entity being instantiated</typeparam>
+    /// <typeparam name="TTransform">The type of transform the entity utilizes</typeparam>
+    /// <param name="packedScene">The packed scene that is able to instantiate the entity</param>
+    /// <param name="transform">The transform that describes the spatial information for the asset being instantiated</param>
+    /// <param name="configurator">An action that can further configure an entity prior to its addition to a game's module</param>
+    /// <returns>The entity that was insntantiated</returns>
+    /// <exception cref="InvalidOperationException">If the transform and node expectations do not match</exception>
+    /// <exception cref="NotSupportedException">If the node is not a known type to this instantiator</exception>
     protected TEntity Instantiate<TEntity, TTransform>(PackedScene packedScene, TTransform transform, Action<TEntity> configurator = null)
         where TEntity: class
         where TTransform: ITransform

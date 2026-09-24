@@ -15,6 +15,9 @@ using OSK.Petra.Assets.Models;
 
 namespace OSK.Petra.Godot.Assets.Scripts;
 
+/// <summary>
+/// An implementation of the Asset System asset manager for godot
+/// </summary>
 [GlobalClass]
 public partial class AssetManager: Node, IAssetManager
 {
@@ -33,6 +36,7 @@ public partial class AssetManager: Node, IAssetManager
 
     #region Godot Overrides
 
+    /// <inheritdoc/>
     public override void _EnterTree()
     {
         _taskManager.Configure(settings =>
@@ -46,6 +50,7 @@ public partial class AssetManager: Node, IAssetManager
         }));
     }
 
+    /// <inheritdoc/>
     public override void _Process(double delta)
     {
         var deltaTimespan = TimeSpan.FromSeconds(delta);
@@ -57,6 +62,7 @@ public partial class AssetManager: Node, IAssetManager
 
     #region IAssetManager
 
+    /// <inheritdoc/>
     public async Task<Output<IAssetInstantiator<TEntity, TTransform>>> GetInstantiatorAsync<TEntity, TTransform>(IEntityAssetReference<TTransform> assetReference, CancellationToken cancellationToken = default) 
         where TTransform : ITransform
         where TEntity: class
@@ -89,6 +95,7 @@ public partial class AssetManager: Node, IAssetManager
         }
     }
 
+    /// <inheritdoc/>
     public async Task<Output> InitializeDatabaseAsync(IAssetInitializationContext context, CancellationToken cancellationToken = default)
     {
         var discoveredPackagesOutput = await DiscoverAssetPackagesAsync(context, cancellationToken);
@@ -109,6 +116,13 @@ public partial class AssetManager: Node, IAssetManager
 
     #region Helpers
 
+    /// <summary>
+    /// Discovers any asset packages that are downloaded and on the device that should be available to a user.
+    /// Consumers are expected to update the progress information via the context provided
+    /// </summary>
+    /// <param name="context">The context for updating information on load progress</param>
+    /// <param name="cancellationToken">A token to cancel the operation</param>
+    /// <returns></returns>
     protected virtual Task<Output> DiscoverAssetPackagesAsync(IAssetInitializationContext context, CancellationToken cancellationToken)
         => Task.FromResult(Out.Success());
 

@@ -8,6 +8,9 @@ using System.Linq;
 
 namespace OSK.Petra.Godot.Assets.Data;
 
+/// <summary>
+/// A unique set of assets and modules that can be utilized within an asset manager
+/// </summary>
 [GlobalClass]
 public partial class GameAssetPackage : Resource
 {
@@ -27,6 +30,9 @@ public partial class GameAssetPackage : Resource
         }
     }
 
+    /// <summary>
+    /// The name of the package
+    /// </summary>
     [Export]
     public string PackageName 
     {
@@ -38,9 +44,15 @@ public partial class GameAssetPackage : Resource
         }
     }
 
+    /// <summary>
+    /// A collection of game entities
+    /// </summary>
     [Export]
     public EntityAssetCollection[] EntityCollections { get; set; }
 
+    /// <summary>
+    /// A collection of game modules
+    /// </summary>
     [Export]
     public ModuleAssetCollection[] ModuleCollections { get; set; }
 
@@ -48,6 +60,10 @@ public partial class GameAssetPackage : Resource
 
     #region Api
 
+    /// <summary>
+    /// Gets all the asset descriptors contianed within this package
+    /// </summary>
+    /// <returns>The entire descriptor collection within the package</returns>
     public IEnumerable<IAssetDescriptor> GetDescriptors()
         => EntityCollections.SelectMany(collection => collection.GetDescriptors()).Concat(ModuleCollections.SelectMany(collection => collection.GetDescriptors()));
 

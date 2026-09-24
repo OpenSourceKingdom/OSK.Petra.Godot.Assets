@@ -8,6 +8,9 @@ using System;
 
 namespace OSK.Petra.Godot.Assets.Data;
 
+/// <summary>
+/// A descriptor for a general game asset within godot
+/// </summary>
 public abstract partial class GameAssetDescriptor : Resource, IAssetDescriptor
 {
     #region Variables
@@ -30,28 +33,22 @@ public abstract partial class GameAssetDescriptor : Resource, IAssetDescriptor
 
     #region IAssetDescriptor
 
+    /// <inheritdoc/>
     public string Name => _name;
 
+    /// <inheritdoc/>
     public string Description => _description;
 
+    /// <inheritdoc/>
     public abstract string AssetPath { get; }
 
+    /// <inheritdoc/>
     public string IconPath => _icon.ResourcePath;
 
+    /// <inheritdoc/>
     public IEnumerable<AssetTag> Tags => GetComputedAssetTags().Concat(_tags?.Select(tag => tag.GetTag()) ?? []).DistinctBy(tag => tag.Category);
 
-    #endregion
-
-    #region Public
-
-    public Guid AssetPackageId { get; internal set; }
-
-    public string AssetPackageName { get; internal set; }
-
-    public string AssetCollectionName { get; internal set; }
-
-    public Texture2D RawIcon => _icon;
-
+    /// <inheritdoc/>
     public long? Size
     {
         get
@@ -66,6 +63,30 @@ public abstract partial class GameAssetDescriptor : Resource, IAssetDescriptor
             return _size;
         }
     }
+
+    #endregion
+
+    #region Public
+
+    /// <summary>
+    /// The package id this asset belongs to
+    /// </summary>
+    public Guid AssetPackageId { get; internal set; }
+
+    /// <summary>
+    /// The package name that this asset belongs to
+    /// </summary>
+    public string AssetPackageName { get; internal set; }
+
+    /// <summary>
+    /// The package collection this asset belongs to
+    /// </summary>
+    public string AssetCollectionName { get; internal set; }
+
+    /// <summary>
+    /// The icon data that the asset uses
+    /// </summary>
+    public Texture2D RawIcon => _icon;
 
     #endregion
 

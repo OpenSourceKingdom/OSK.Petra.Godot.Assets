@@ -7,6 +7,10 @@ using OSK.Petra.Godot.Assets.Models;
 
 namespace OSK.Petra.Godot.Assets.Data;
 
+/// <summary>
+/// A collection of some game asset
+/// </summary>
+/// <typeparam name="TDescriptor">The descriptor type the underlying assets use</typeparam>
 public abstract partial class GameAssetCollection<TDescriptor>: Resource
     where TDescriptor: GameAssetDescriptor
 {
@@ -17,6 +21,9 @@ public abstract partial class GameAssetCollection<TDescriptor>: Resource
 
     private string _name;
 
+    /// <summary>
+    /// The unique name for this collection
+    /// </summary>
     [Export(PropertyHint.Enum)]
     public string Name
     {
@@ -37,6 +44,7 @@ public abstract partial class GameAssetCollection<TDescriptor>: Resource
 
     #region Godot Overrides
 
+    /// <inheritdoc/>
     public override void _ValidateProperty(Dictionary property)
     {
         if (property["name"].AsStringName() == nameof(Name))
@@ -51,6 +59,11 @@ public abstract partial class GameAssetCollection<TDescriptor>: Resource
 
     #region Helpers
 
+    /// <summary>
+    /// Updates the collection and its underlying entities to the specified package id and name
+    /// </summary>
+    /// <param name="packageId">The package id to set the collection to</param>
+    /// <param name="packageName">The name of the package</param>
     public void UpdateIdentifiers(Guid packageId, string packageName)
     {
         _assetPackageId = packageId;
@@ -59,8 +72,15 @@ public abstract partial class GameAssetCollection<TDescriptor>: Resource
         UpdateIdentifiers();
     }
 
+    /// <summary>
+    /// Gets the descriptors associated with the assets
+    /// </summary>
+    /// <returns>The asset descriptors</returns>
     public abstract IEnumerable<GameAssetDescriptor> GetDescriptors();
 
+    /// <summary>
+    /// Informs the collection to update its identifiers
+    /// </summary>
     protected void UpdateIdentifiers()
     {
         var descriptors = GetDescriptors();

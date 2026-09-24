@@ -9,6 +9,9 @@ using OSK.Petra.Assets.Models;
 
 namespace OSK.Petra.Godot.Assets.Data;
 
+/// <summary>
+/// Describes a specific module asset within godot
+/// </summary>
 [Tool]
 [GlobalClass]
 public partial class ModuleAssetDescriptor : GameAssetDescriptor, IModuleDescriptor
@@ -32,11 +35,12 @@ public partial class ModuleAssetDescriptor : GameAssetDescriptor, IModuleDescrip
 		set { _loaderType = value; }
 	}
 
-	#endregion
+    #endregion
 
-	#region Godot Overrides
+    #region Godot Overrides
 
-	public override void _ValidateProperty(Dictionary property)
+    /// <inheritdoc/>
+    public override void _ValidateProperty(Dictionary property)
     {
         GD.Print("Validating" + property["name"]);
         if (property["name"].AsStringName() == nameof(_moduleName))
@@ -58,10 +62,13 @@ public partial class ModuleAssetDescriptor : GameAssetDescriptor, IModuleDescrip
 
     #region GameAssetDescriptor Overrides
 
+    /// <inheritdoc/>
     public override string AssetPath => _assetPath;
 
-	public ModuleAssetIdentifier AssetIdentifier => new(AssetPackageId, _moduleName);
+    /// <inheritdoc/>
+    public ModuleAssetIdentifier AssetIdentifier => new(AssetPackageId, _moduleName);
 
+    /// <inheritdoc/>
     public Type GetModuleLoaderType()
 	{
 		return string.IsNullOrWhiteSpace(ModuleLoaderType)

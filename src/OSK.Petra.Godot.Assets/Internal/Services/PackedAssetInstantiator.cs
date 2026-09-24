@@ -11,7 +11,7 @@ internal class PackedAssetInstantiator<TEntity, TTransform>(PackedScene packedSc
 {
     #region IAssetInstantiator
 
-    public TEntity Instantiate(TTransform transform, Action<TEntity>? configurator = null)
+    public TEntity Instantiate(TTransform transform, Action<TEntity> configurator = null)
         => Instantiate<TEntity, TTransform>(packedScene, transform, configurator);
 
     public void Dispose()

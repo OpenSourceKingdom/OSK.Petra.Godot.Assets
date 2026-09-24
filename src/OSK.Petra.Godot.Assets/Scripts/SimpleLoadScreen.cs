@@ -8,6 +8,11 @@ using OSK.Petra.Assets.Models;
 
 namespace OSK.Petra.Godot.Assets.Scripts;
 
+/// <summary>
+/// Provides a basic load screen that utilizes a background
+/// image to 'hide' the scenes. Description text and progress
+/// bar allow for setting visual information to a user
+/// </summary>
 public partial class SimpleLoadScreen : Node, ILoadScreen
 {
     #region Variables
@@ -27,13 +32,14 @@ public partial class SimpleLoadScreen : Node, ILoadScreen
     [Export]
     private Label _progressText;
 
-    private IModuleLoadContext? _loadContext;
+    private IModuleLoadContext _loadContext;
     private bool _moduleReady;
 
     #endregion
 
     #region Godot Overrides
 
+    /// <inheritdoc/>
     public override void _Process(double delta)
     {
         if (_loadContext is not null || _loadContext.LoadProgress.State is not ProgressState.Complete)
@@ -52,6 +58,7 @@ public partial class SimpleLoadScreen : Node, ILoadScreen
 
     #region ILoadScreen
 
+    /// <inheritdoc/>
     public void Initialize(ModuleLoadParameters loadParameters, IModuleLoadContext context)
     {
         _backgroundImage.Visible = true;
@@ -97,9 +104,20 @@ public partial class SimpleLoadScreen : Node, ILoadScreen
         }
     }
 
+    /// <summary>
+    /// Gets the description text to display on the load screen
+    /// e.g. this could be a mission story or background context
+    /// </summary>
+    /// <returns>The description to display</returns>
     protected virtual string GetDescriptionText()
         => string.Empty;
 
+    /// <summary>
+    /// Gets the progress text to display to a user
+    /// e.g. Loading Map - 55%
+    /// </summary>
+    /// <param name="progress">The percentage progress, 0-1</param>
+    /// <returns>The string to display for progress text</returns>
     protected virtual string GetProgressText(LoadProgress progress)
         => $"{progress.Percentage}% ({progress.Messaage})";
 
