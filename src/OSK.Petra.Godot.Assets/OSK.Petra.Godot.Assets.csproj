@@ -1,0 +1,38 @@
+﻿<Project Sdk="Godot.NET.Sdk/4.4.0">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<LangVersion>14</LangVersion>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+
+		<Description>Provides an implementation for an asset manager, instantiators, module loaders, and related asset configuration for Godot within the Petra game framework.</Description>
+		<PackageTags>OpenSourceKingdom, OpenSource, Petra, Game, Framework, Suite, Tool, Asset, Instantiate, Module, Load, Manage, Godot</PackageTags>
+		<Title>OSK.Petra.Godot.Assets</Title>
+		<Authors>BlankDev117</Authors>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/OpenSourceKingdom/OSK.Petra.Godot.Assets</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<!-- Required Godot injection -->
+	<ItemGroup>
+		<Compile Update="**\*.cs" Pack="true" PackagePath="godot\%(RecursiveDir)%(Filename)%(Extension)" />
+		<None Include="..\OSK.Petra.Godot.targets" Pack="true" PackagePath="buildTransitive\$(MSBuildProjectName).targets" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="OSK.Operations.Workflows" Version="1.1.0" />
+		<PackageReference Include="OSK.Petra.Assets" Version="0.1.0" />
+		<PackageReference Include="OSK.Petra.Godot.Framework.Build" Version="0.1.1" />
+		<PackageReference Include="OSK.Petra.Godot.Modules.Services" Version="0.7.2" />
+		<PackageReference Include="OSK.Petra.Godot.Operations.Workflows" Version="0.1.0" />
+		<PackageReference Include="OSK.Petra.Godot.Primitives" Version="0.3.2" />
+	</ItemGroup>
+
+</Project>
